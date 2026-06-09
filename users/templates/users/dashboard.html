@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - {{ user.full_name }}{% endblock %}
+
+{% block content %}
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body d-flex justify-content-between align-items-center py-4">
+        <div>
+            <h2 class="m-0 fw-bold text-dark">Welcome, {{ user.full_name }}</h2>
+            <p class="text-muted m-0">Patient Email Account: {{ user.email_address }}</p>
+        </div>
+        <a href="{% url 'health-prediction' %}" class="btn btn-primary px-4 fw-semibold">+ New Prediction Request</a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h5 class="m-0 card-title fw-bold text-secondary">Historical Health Log Records</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+                <thead class="table-light text-uppercase font-monospace small">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Glucose</th>
+                        <th>Haemoglobin</th>
+                        <th>Cholesterol</th>
+                        <th>AI Risk Classification & System Remarks</th>
+                        <th class="text-center pe-4">Actions Management</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td class="ps-4"><strong>{{ forloop.counter }}</strong></td>
+                        <td>{{ patient.glucose }} <span class="text-muted small">mg/dL</span></td>
+                        <td>{{ record.haemoglobin }} <span class="text-muted small">g/dL</span></td>
+                        <td>{{ record.cholesterol }} <span class="text-muted small">mg/dL</span></td>
+                        <td>
+                            <span class="badge {% if 'High' in record.remarks %}bg-danger{% elif 'Moderate' in record.remarks %}bg-warning text-dark{% else %}bg-success{% endif %} mb-1 px-2.5 py-1.5 fs-7">
+                                {% if 'High' in record.remarks %}High Risk{% elif 'Moderate' in record.remarks %}Moderate Risk{% else %}Low Risk{% endif %}
+                            </span>
+                            <div class="small text-muted">{{ record.remarks }}</div>
+                        </td>
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{% url 'edit_record' record.id %}" class="btn btn-sm btn-outline-secondary px-3">Modify</a>
+                                
+                                <form action="{% url 'delete_record' record.id %}" method="POST" onsubmit="return confirm('Are you sure you want to completely erase this health log?');" class="m-0">
+                                    {% csrf_token %}
+                                    <a href="{% url 'delete_record' record.id %}" class="btn btn-sm btn-outline-danger px-3">Delete</a>                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <p class="mb-0 fs-5">No historical physiological reports found.</p>
+                            <span class="small">Try running an AI prediction check first!</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

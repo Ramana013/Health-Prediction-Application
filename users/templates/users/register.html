@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-5">
+
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-success">
+                        Create Account
+                    </h2>
+                    <p class="text-muted">
+                        Enter your health details below
+                    </p>
+                </div>
+
+               <form method="post">
+                {% csrf_token %}
+                   {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.errors }}
+                    </div>
+                    {% endif %}
+
+    <div class="d-flex justify-content-center">
+        <div style="width: 450px;">
+
+            <div class="mb-3">
+                <label for="name" class="form-label fw-semibold">
+                    Full Name
+                </label>
+                <input type="text"
+                       name="full_name"
+                       class="form-control"
+                       placeholder="Enter full name">
+            </div>
+
+            <div class="mb-3">
+                <label for="dob" class="form-label fw-semibold">
+                    Date of Birth
+                </label>
+                <input type="date"
+                   name="date_of_birth"
+                   class="form-control"
+                   max="{{ today|date:'Y-m-d' }}"
+                   required>
+            </div>
+
+            <div class="mb-3">
+                <label for = "email" class="form-label fw-semibold">
+                    Email Address
+                </label>
+                <input type="email"
+                       name="email_address"
+                       class="form-control"
+                       placeholder="Enter email address">
+            </div>
+            <div class="mb-3">
+                <label for = "password"class="form-label fw-semibold">
+                    Password
+                </label>
+                {{ form.password }}
+
+                {% if form.password.errors %}
+                    <div class="text-danger">
+                        {{ form.password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for = "confirm password" class="form-label fw-semibold">
+                    Confirm Password
+                </label>
+
+                {{ form.confirm_password }}
+
+                {% if form.confirm_password.errors %}
+                    <div class="text-danger mt-1">
+                        {{ form.confirm_password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success w-100 mt-3">
+                Register
+            </button>
+
+        </div>
+    </div>
+</form>
+
+                <hr>
+
+                <div class="text-center">
+                    <p class="mb-0">
+                        Already have an account?
+                        <a href="{% url 'login' %}"
+                           class="text-decoration-none fw-bold">
+                            Login
+                        </a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
