@@ -56,6 +56,10 @@ class RegisterView(CreateView):
 
 
 class HealthPredictionView(View):
+    template_name = 'users/prediction.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
 
     def post(self, request):
         glucose = request.POST.get('glucose')
