@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Modify Medical Metrics Log #{{ record.id }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white py-3">
+                <h5 class="card-title m-0 fw-bold">Modify Metric Measurements (Record #{{ record.id }})</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="glucose" class="form-label fw-semibold">Glucose Level (mg/dL)</label>
+                        <input type="number" step="0.1" name="glucose" class="form-control form-control-lg" value="{{ record.glucose }}" required>
+                        <div class="form-text text-muted">Rules threshold: >160 High, 120-160 Moderate.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Haemoglobin" class="form-label fw-semibold">Haemoglobin Level (g/dL)</label>
+                        <input type="number" step="0.1" name="haemoglobin" class="form-control form-control-lg" value="{{ record.haemoglobin }}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="Cholesterol" class="form-label fw-semibold">Cholesterol Level (mg/dL)</label>
+                        <input type="number" step="0.1" name="cholesterol" class="form-control form-control-lg" value="{{ record.cholesterol }}" required>
+                        <div class="form-text text-muted">Rules threshold: >240 High.</div>
+                    </div>
+
+                    <div class="d-flex gap-2 pt-2">
+                        <button type="submit" class="btn btn-success btn-lg flex-grow-1 fs-6 fw-semibold">Re-calculate & Update Log</button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg border fs-6">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

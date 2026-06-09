@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Health Prediction
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-5">
+
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-primary">
+                        Health Prediction
+                    </h2>
+                    <p class="text-muted">
+                        Enter your health parameters to get a prediction.
+                    </p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for = "glucose" class="form-label fw-semibold">
+                            Glucose
+                        </label>
+                        <input type="number"
+                               step="0.01"
+                               name="glucose"
+                               class="form-control"
+                               placeholder="Enter Glucose Value"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for = "Haemoglobin" class="form-label fw-semibold">
+                            Haemoglobin
+                        </label>
+                        <input type="number"
+                               step="0.01"
+                               name="haemoglobin"
+                               class="form-control"
+                               placeholder="Enter Haemoglobin Value"
+                               required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for = "Cholesterol" class="form-label fw-semibold">
+                            Cholesterol
+                        </label>
+                        <input type="number"
+                               step="0.01"
+                               name="cholesterol"
+                               class="form-control"
+                               placeholder="Enter Cholesterol Value"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Predict
+                    </button>
+
+                </form>
+                {% if prediction %}
+
+                <div class="alert alert-success mt-4">
+
+                    <h5>
+                        AI Prediction Result
+                    </h5>
+
+                    <p>
+                        {{ prediction }}
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+                {% if prediction %}
+                <div class="alert alert-success mt-4">
+                    <h5 class="mb-2">
+                        Prediction Result
+                    </h5>
+                    <strong>{{ prediction }}</strong>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
